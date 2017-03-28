@@ -19,9 +19,40 @@ void printList(struct node* head)
 }
 void addAtFront(struct node** head_ref, int data)
 {
-  struct node* new_node = malloc(sizeof(struct node));
+  struct node* new_node = (struct node *)malloc(sizeof(struct node));
   new_node->data = data;
-
+  new_node->next = *head_ref;
+  *head_ref = new_node;
+}
+void addAfter(struct node* prev_node, int data)
+{
+  struct node* new_node = (struct node *)malloc(sizeof(struct node));
+  if(prev_node==NULL)
+  {
+    printf("prev_node can not be null");
+    return;
+  }
+  new_node->data = data;
+  new_node->next = prev_node->next;
+  prev_node->next = new_node;
+}
+void addAtEnd(struct node** head_ref, int data)
+{
+  struct node* new_node = (struct node *)malloc(sizeof(struct node));
+  new_node->data = data;
+  new_node->next = NULL;
+  if(*head_ref == NULL)
+  {
+    *head_ref = new_node;
+    return;
+  }
+  struct node * last = *head_ref;
+  while(last->next!=NULL)
+  {
+    last = last->next;
+  }
+  last->next = new_node;
+  return;
 }
 //__________________________________________________________________
 int main()
@@ -90,6 +121,19 @@ int main()
 
    Note that only head is sufficient to represent the whole list.  We can
    traverse the complete list by following next pointers.    */
-   printList(head);
-   return 0;
+  printList(head);
+
+  addAtEnd(&head, 6);
+
+  addAtFront(&head, 7);
+  addAtFront(&head, 1);
+
+  addAtEnd(&head, 4);
+
+  addAfter(head->next, 8);
+
+  printf("\n Created Linked list is: ");
+  printList(head);
+
+  return 0;
 }
